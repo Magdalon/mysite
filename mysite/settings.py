@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '10.216.52.239',
     '10.216.52.0',
-    'localhost'
+    'localhost',
+    'magdalon.pythonanywhere.com',
 ]
 
 
