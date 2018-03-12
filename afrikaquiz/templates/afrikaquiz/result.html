@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+  <title>Magdalon's African Quiz</title>
+</head>
+<body>
+<h1>{{ country.name }}</h1>
+
+<p>
+  <b>You answered:</b> {{selected_person}}
+</p>
+<p>
+  <b>Correct answer:</b> {{correct_person}}
+</p>
+<p>
+  {% if selected_person == correct_person %}
+    Congratulations. You are correct!
+  {% else %}
+    Sorry. You are wrong.
+  {% endif %}
+</p>
+<p>
+  <a href="{% url 'afrikaquiz:detail' country.iso %}">Try again?</a> | <a href="{% url 'afrikaquiz:random' %}">Next country!</a>
+</p>
+<hr />
+<h2>Others have answered:</h2>
+<table class="pure-table pure-table-bordered">
+  <tr>
+    <th>
+      #
+    </th>
+    <th>
+      Navn
+    </th>
+    <th>
+      Stemmer
+    </th>
+  </tr>
+  {% for lr in alternativer %}
+  <tr>
+    <td>
+      {{forloop.counter}}
+    </td>
+
+    <td>
+      {{ lr.person.name }}
+    </td>
+
+    <td>
+      {{ lr.votes }}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<hr />
+<h2>Leadership history</h2>
+{% if history %}
+
+  <table class="pure-table pure-table-bordered">
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        from
+      </th>
+      <th>
+        to
+      </th>
+    </tr>
+    {% for leader in history %}
+    <tr>
+      <td>
+        leader.name
+      </td>
+      <td>
+        leader.from
+      </td>
+      <td>
+        leader.to
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+{% else %}
+<p>
+  No history available.
+</p>
+{% endif %}
+</body>
+</html>
