@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'statistikk.apps.StatistikkConfig',
     'afrikaquiz.apps.AfrikaquizConfig',
     'polls.apps.PollsConfig',
     'django.contrib.admin',
