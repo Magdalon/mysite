@@ -1,0 +1,168 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+ <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+ <title>Datasett-detaljer</title>
+</head>
+<body>
+<h1>Sammenligning</h1>
+
+<h2>Data</h2>
+{{datasett.data_description}}<br />
+<table class="pure-table pure-table-bordered">
+
+{% for datasett in sammenligning.datasett.all%}
+<tr>
+  <th>
+    {{datasett.person_name}}
+  </th>
+{% for data in datasett.data_set.all %}
+<td> {{data.value}} </td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+<img src="{% static sammenligning.linje_url %}" />
+
+<h2>Sorterte data</h2>
+<table class="pure-table pure-table-bordered">
+
+{% for datasett in sammenligning.datasett.all%}
+<tr>
+  <th>
+    {{datasett.person_name}}
+  </th>
+{% for data in datasett.sortert %}
+<td> {{data}} </td>
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+
+<h2>Statistikk</h2>
+<table class="pure-table pure-table-bordered">
+  <tr>
+    <th>
+      Statistikkvariabel
+    </th>
+      {% for datasett in sammenligning.datasett.all %}
+        <th>
+          {{datasett.person_name}}
+        </th>
+    {% endfor %}
+    <th> Kommentar </th>
+  </tr>
+  <tr>
+    <th>Minst</th>
+      {% for datasett in sammenligning.datasett.all %}
+        <td>{{datasett.min}} {{datasett.enhet}}</td>
+      {% endfor %}
+      <td> {{sammenligning.min}} har den beste tiden.</td>
+  </tr>
+  <tr>
+    <th>Størst</th>
+      {% for datasett in sammenligning.datasett.all %}
+        <td>{{datasett.max}} {{datasett.enhet}}</td>
+      {% endfor %}
+      <td> {{sammenligning.max}} har den dårligste tiden.</td>
+  </tr>
+  <tr>
+    <th>Median</th>
+      {% for datasett in sammenligning.datasett.all %}
+        <td>{{datasett.median}} {{datasett.enhet}}</td>
+      {% endfor %}
+      <td> &nbsp;</td>
+  </tr>
+  <tr>
+    <th>
+      Gjennomsnitt
+    </th>
+    {% for datasett in sammenligning.datasett.all %}
+    <td>{{datasett.gjennomsnitt}} {{datasett.enhet}}</td>
+    {% endfor %}
+    <td>{{sammenligning.gjennomsnitt_min}} har den beste tiden i gjennomsnitt.</td>
+</tr>
+<tr>
+<th>Typetall:</th>
+{% for datasett in sammenligning.datasett.all %}
+<td> {% for tall in datasett.typetall %} {{tall}} {{datasett.enhet}} ,{% endfor %}</td>
+{% endfor %}
+<td> &nbsp;</td>
+</tr>
+<tr>
+<th>Variasjonsbredde</th>
+{% for datasett in sammenligning.datasett.all %}
+<td> {{datasett.variasjonsbredde}} {{datasett.enhet}}</td>
+{% endfor %}
+<td> &nbsp;</td>
+
+</tr>
+<tr>
+
+<th> Q1: </th>
+{% for datasett in sammenligning.datasett.all %}
+
+<td>{{datasett.Q1}} {{datasett.enhet}}</td>
+{% endfor %}
+<td> &nbsp;</td>
+
+</tr>
+<tr>
+
+<th> Q3: </th>
+{% for datasett in sammenligning.datasett.all %}
+
+<td>{{datasett.Q3}} {{datasett.enhet}}</td>
+{% endfor %}
+<td> &nbsp;</td>
+
+</tr>
+
+<tr>
+<th> Kvartilbredde: </th>
+{% for datasett in sammenligning.datasett.all %}
+
+<td>{{datasett.kvartilbredde}} {{datasett.enhet}}</td>
+{% endfor %}
+<td> &nbsp;</td>
+
+</tr>
+<tr>
+<th>
+  Varians
+</th>
+  {% for datasett in sammenligning.datasett.all %}
+    <td>{{datasett.varians}} {{datasett.enhet}}²</td>
+  {% endfor %}
+  <td> &nbsp;</td>
+
+  </tr>
+  <tr>
+    <th>
+      Standardavvik:
+    </th>
+    {% for datasett in sammenligning.datasett.all %}
+    <td>{{datasett.standardavvik}} {{datasett.enhet}}</td>
+    {% endfor %}
+    <td> {{sammenligning.standardavvik_max}} har den største variasjonen i tidene sine.</td>
+
+  </tr>
+  <tr>
+    <th>
+      Gjennomsnittshastighet:
+    </th>
+    {% for datasett in sammenligning.datasett.all %}
+    <td>
+      {{datasett.gjennomsnittshastighet}} km/time
+    </td>
+    {% endfor %}
+    <td> &nbsp;</td>
+
+  </tr>
+</table>
+
+</body>
+</html>

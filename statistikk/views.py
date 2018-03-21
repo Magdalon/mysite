@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 # Create your views here.
-from .models import Datasett
+from .models import Datasett, Sammenligning
 
 
 def index(request):
@@ -14,3 +14,7 @@ def index(request):
 class DatasettView(generic.DetailView):
     model = Datasett
     template_name = 'statistikk/datasett.html'
+
+class SammenligningView(generic.DetailView):
+    model = Sammenligning
+    template_name= 'statistikk/sammenligning.html'
