@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 # Register your models here.
-from .models import Datasett, Data
+from .models import Datasett, Data, Sammenligning
 
 class DataInline(admin.TabularInline):
     model = Data
@@ -11,3 +11,4 @@ class DatasettAdmin(admin.ModelAdmin):
     inlines = [DataInline]
 
 admin.site.register(Datasett, DatasettAdmin)
+admin.site.register(Sammenligning)

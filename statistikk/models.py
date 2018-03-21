@@ -19,7 +19,7 @@ class Datasett(models.Model):
     enhet = models.CharField(max_length=200,default='minutter')
 
     def data(self):
-        return list(self.data_set.values_list('value',flat=True))
+        return list(self.data_set.values_list('verdi',flat=True))
 
     def sortert(self):
         return sorted(self.data())
@@ -56,7 +56,6 @@ class Datasett(models.Model):
         print("here!")
 
     def gjennomsnittshastighet(self):
-        data = list(self.data_set.values_list('value',flat=True))
         return format(600/numpy.mean(self.data()), self.FORMAT)
 
     def linje_url(self):
@@ -74,7 +73,7 @@ class Datasett(models.Model):
 
     def generer_linje(self, close = True):
         filnavn = "statistikk/static/images/datasett/" + str(self.pk) + ".png"
-        plt.plot(range(1,len(self.data())+1),self.data(),label=Self.person_name)
+        plt.plot(range(1,len(self.data())+1),self.data(),label=self.person_name)
         plt.ylabel('tid (minutter)')
         plt.xlabel('observasjon')
         plt.savefig(filnavn)
@@ -82,6 +81,13 @@ class Datasett(models.Model):
             plt.close()
         return filnavn
 
+    def leggtil(name,data):
+        nyttdatasett = Datasett.objects.create(person_name=name)
+
+        for v in data:
+            Data.objects.create(datasett=nyttdatasett,verdi=v)
+
+        return nyttdatasett
 
 class Sammenligning(models.Model):
     datasett = models.ManyToManyField(Datasett)
@@ -114,7 +120,7 @@ class Sammenligning(models.Model):
         person = 'Ingen'
         for datasett in self.datasett.all():
             if(datasett.max() == storst):
-                person = 'Begge'
+                person = 'Flere enn en (begge)'
             if(datasett.max()>storst):
                 person=datasett.person_name
                 storst = datasett.max()
@@ -126,7 +132,7 @@ class Sammenligning(models.Model):
         person = 'Ingen'
         for datasett in self.datasett.all():
             if(datasett.min() == minst):
-                person = 'Begge'
+                person = 'Flere enn en (begge)'
             if(datasett.min()<minst):
                 person=datasett.person_name
                 minst = datasett.min()
@@ -138,7 +144,7 @@ class Sammenligning(models.Model):
         person = 'Ingen'
         for datasett in self.datasett.all():
             if(datasett.gjennomsnitt() == minst):
-                person = 'Begge'
+                person = 'Flere enn en (begge)'
             if(datasett.gjennomsnitt()<minst):
                 person=datasett.person_name
                 minst = datasett.gjennomsnitt()
@@ -149,7 +155,7 @@ class Sammenligning(models.Model):
         person = 'Ingen'
         for datasett in self.datasett.all():
             if(datasett.standardavvik() == verdi):
-                person = 'Begge'
+                person = 'Flere enn en (begge)'
             if(datasett.standardavvik()>verdi):
                 person=datasett.person_name
                 minst = datasett.gjennomsnitt()
@@ -159,7 +165,7 @@ class Sammenligning(models.Model):
 
 class Data(models.Model):
     app_label = 'statistikk'
-    dataset = models.ForeignKey(Datasett, on_delete=models.CASCADE)
-    value = models.IntegerField()
+    datasett = models.ForeignKey(Datasett, on_delete=models.CASCADE)
+    verdi = models.IntegerField()
     def __str__(self):
-        return str(self.value)
+        return str(self.verdi)
